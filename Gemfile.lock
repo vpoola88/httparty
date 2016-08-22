@@ -3,6 +3,7 @@ GEM
   specs:
     httparty (0.14.0)
       multi_xml (>= 0.5.2)
+    json (1.8.3)
     multi_xml (0.5.5)
     rack (1.6.4)
     rack-protection (1.5.3)
@@ -18,7 +19,8 @@ PLATFORMS
 
 DEPENDENCIES
   httparty
+  json
   sinatra
 
 BUNDLED WITH
-   1.11.2
+   1.12.5

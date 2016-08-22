@@ -1,22 +1,17 @@
 require 'sinatra'
-require 'httparty'
 require 'json'
 
-post '/gateway' do
-  message = params[:text].gsub(params[:trigger_word], '').strip
+post '/payload' do
+  push = JSON.parse(request.body.read)
+  puts "I got some JSON: #{push.inspect}"
 
-  action, repo = message.split('_').map {|c| c.strip.downcase }
-  repo_url = "https://api.github.com/repos/#{repo}"
+  hello_world
+  
+end 
 
-  case action
-    when 'issues'
-      resp = HTTParty.get(repo_url)
-      resp = JSON.parse resp.body
-      respond_message "There are #{resp['open_issues_count']} open issues on #{repo}"
-  end
-end
 
-def respond_message message
-  content_type :json
-  {:text => message}.to_json
+def hello_world
+  p "$" * 100
+  puts "helo world"
+  p "$" * 100
 end
