@@ -5,9 +5,9 @@ require 'httparty'
 
   
 post '/payload' do
-  push = JSON.parse(request.body.read)
+  github_data = JSON.parse(request.body.read)
   binding.pry
-  user = push['sender']['login']
+  user = github_data['sender']['login']
 
   # data = {"currentUserId": currentUserId, }
 
