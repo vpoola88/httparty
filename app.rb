@@ -13,7 +13,6 @@ post '/payload' do
 
   if status 200
     payload = JSON.parse(request.body.read)
-    binding.pry
 
     currentUserId = payload["currentUserId"]
     currentUnitId = payload["currentUnitId"]
@@ -45,7 +44,6 @@ class TalentLMSUserSurvey
     response = HTTParty.get(talentlms_url, :basic_auth => auth)
     parsed_response  = JSON.parse(response)
 
-    binding.pry
 
     if parsed_response.key?("error")
       @survey_answers = "nil"
@@ -85,46 +83,3 @@ class TalentLMSUserSurvey
   end
 
 end
-
-
-# class UserCommits
-#   def initialize(username)
-#     @username = username
-#   end
-
-#   def github_url
-#     "https://api.github.com/users/#{@username}"
-#   end
-
-#   def get_api_data
-#     response = HTTParty.get(github_url)
-#     data = JSON.parse(response.body)
-
-#     binding.pry
-#   end
-
-# end
-
-# class TalentLMSUserSurvey
-#   def initialize(userid, surveyid)
-#     @userid = userid
-#     @surveyid = surveyid
-#   end
-
-#   def talenlms_url
-#     "https://api.talentlms.com/#{@userid}/surveys/#{@surveyid}"/
-#   end
-
-#   def get_talentlms_api_data
-#     response = HTTParty.get(talentlms_url)
-#     data = JSON.parse(response.body)
-
-#     binding.pry
-#   end
-
-# end
-
-
-#talen lms call
-#1948 survey
-# figure out how to reorder
