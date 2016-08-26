@@ -1,4 +1,6 @@
 require 'sinatra'
+require "dotenv"
+  Dotenv.load
 require 'json'
 require 'pry'
 require 'httparty'
@@ -39,7 +41,7 @@ class TalentLMSUserSurvey
 
   def get_talentlms_api_data
 
-    auth = {:username => "GzucUhWNevInBPN4CVxl1z1XNcIWDP", :password => ""}
+    auth = {:username => ENV['username'], :password => ""}
     response = HTTParty.get(talentlms_url, :basic_auth => auth)
     parsed_response  = JSON.parse(response)
 
