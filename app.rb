@@ -2,7 +2,6 @@ require 'sinatra'
 require "dotenv"
   Dotenv.load
 require 'json'
-require 'pry'
 require 'httparty'
 require 'uri'
 require 'net/http'
