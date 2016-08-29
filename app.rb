@@ -8,6 +8,9 @@ require 'uri'
 require 'net/http'
 
 
+get '/' do
+  "Hello World!"
+end
 
 post '/payload' do
 
