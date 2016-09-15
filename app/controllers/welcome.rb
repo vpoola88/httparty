@@ -1,3 +1,4 @@
+class Welcome < Sinatra::Base
 post '/payload' do
 
   if status 200
@@ -36,7 +37,7 @@ class TalentLMSUserSurvey
 
   def get_talentlms_api_data
 
-    auth = {:username => ENV['username'], :password => ""}
+    auth = {:username => "GzucUhWNevInBPN4CVxl1z1XNcIWDP", :password => ""}
     response = HTTParty.get(talentlms_url, :basic_auth => auth)
     parsed_response  = JSON.parse(response)
 
@@ -78,9 +79,5 @@ class TalentLMSUserSurvey
 
   end
 
-  private
-  def user_params
-    params.require(:user).permit(:currentUserId, :currentUnitId, :answers)
-  end
-
+end
 end
