@@ -1,6 +1,10 @@
 
 ## get from webhook
 
+get '/' do
+  "hello!"
+end
+
 post '/payload' do
 
   if status 200
