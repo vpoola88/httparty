@@ -1,18 +1,20 @@
 
+## get from webhook
+
 post '/payload' do
 
   if status 200
-    params = JSON.parse(request.body.read)
+    # params = JSON.parse(request.body.read)
 
     currentUserId = params["currentUserId"]
     currentUnitId = params["currentUnitId"]
 
     u = TalentLMSUserSurvey.new(currentUserId, currentUnitId)
-    u.get_talentlms_api_data
-    answers = u.get_talentlms_api_data
 
-    @user = User.new(currentUserId: params["currentUserId"], currentUnitId: params["currentUnitId"], answers: answers)
-    @user.save!
+    answers = u.get_survey_answers
+
+    user = User.new(currentUserId: params["currentUserId"], currentUnitId: params["currentUnitId"], answers: answers)
+    user.save!
 
     u.assign_survey
 
@@ -35,7 +37,7 @@ class TalentLMSUserSurvey
     "https://wisdomlabs.talentlms.com/api/v1/gettestanswers/test_id:#{@currentUnitId},user_id:#{@currentUserId}"
   end
 
-  def get_talentlms_api_data
+  def get_survey_answers
 
     auth = {:username => "GzucUhWNevInBPN4CVxl1z1XNcIWDP", :password => ""}
     response = HTTParty.get(talentlms_url, :basic_auth => auth)
@@ -45,10 +47,13 @@ class TalentLMSUserSurvey
     if parsed_response.key?("error")
       @survey_answers = "nil"
     else
+      #return all answers here
       @survey_answers = parsed_response["questions"].first["user_answers"]
     end
 
   end
+
+  # first answer
 
   def assign_survey
 
