@@ -4,7 +4,7 @@
 post '/payload' do
 
   if status 200
-    # params = JSON.parse(request.body.read)
+    params = JSON.parse(request.body.read)
 
     currentUserId = params["currentUserId"]
     currentUnitId = params["currentUnitId"]
