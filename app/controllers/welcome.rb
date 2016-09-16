@@ -1,4 +1,4 @@
-class Welcome < Sinatra::Base
+
 post '/payload' do
 
   if status 200
@@ -79,5 +79,4 @@ class TalentLMSUserSurvey
 
   end
 
-end
 end
