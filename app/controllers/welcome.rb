@@ -1,5 +1,11 @@
 require 'json'
 
+
+
+get '/' do
+  "hello!"
+end
+
 post '/payload' do
 
   if status 200
@@ -8,12 +14,21 @@ post '/payload' do
     currentUserId = params["currentUserId"]
     currentUnitId = params["currentUnitId"]
 
+
     u = TalentLMS.init({
         :api_key => 'R3p1Y1VoV05ldkluQlBONENWeGwxejFYTmNJV0RQOg',
         :sub_domain => 'https://wisdomlabs.talentlms.com/api/v1/'
       })
 
       binding.pry
+
+    u = TalentLMSUserSurvey.new(currentUserId, currentUnitId)
+
+    answers = u.get_survey_answers
+
+    user = User.new(currentUserId: params["currentUserId"], currentUnitId: params["currentUnitId"], answers: answers)
+    user.save!
+
 
     # u = TalentLMSUserSurvey.new(currentUserId, currentUnitId)
     # u.get_talentlms_api_data
@@ -43,9 +58,9 @@ class TalentLMSUserSurvey
     "https://wisdomlabs.talentlms.com/api/v1/gettestanswers/test_id:#{@currentUnitId},user_id:#{@currentUserId}"
   end
 
-  def get_talentlms_api_data
+  def get_survey_answers
 
-    auth = {:username => ENV['username'], :password => ""}
+    auth = {:username => "GzucUhWNevInBPN4CVxl1z1XNcIWDP", :password => ""}
     response = HTTParty.get(talentlms_url, :basic_auth => auth)
     parsed_response  = JSON.parse(response)
 
@@ -54,10 +69,13 @@ class TalentLMSUserSurvey
     if parsed_response.key?("error")
       @survey_answers = "nil"
     else
+      #return all answers here
       @survey_answers = parsed_response["questions"].first["user_answers"]
     end
 
   end
+
+  # first answer
 
   def assign_survey
 
@@ -91,11 +109,6 @@ class TalentLMSUserSurvey
       end
     end
 
-  end
-
-  private
-  def user_params
-    params.require(:user).permit(:currentUserId, :currentUnitId, :answers)
   end
 
 end
