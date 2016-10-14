@@ -1,3 +1,5 @@
+require 'json'
+
 post '/payload' do
 
   if status 200
@@ -6,14 +8,21 @@ post '/payload' do
     currentUserId = params["currentUserId"]
     currentUnitId = params["currentUnitId"]
 
-    u = TalentLMSUserSurvey.new(currentUserId, currentUnitId)
-    u.get_talentlms_api_data
-    answers = u.get_talentlms_api_data
+    u = TalentLMS.init({
+        :api_key => 'R3p1Y1VoV05ldkluQlBONENWeGwxejFYTmNJV0RQOg',
+        :sub_domain => 'https://wisdomlabs.talentlms.com/api/v1/'
+      })
 
-    @user = User.new(currentUserId: params["currentUserId"], currentUnitId: params["currentUnitId"], answers: answers)
-    @user.save!
+      binding.pry
 
-    u.assign_survey
+    # u = TalentLMSUserSurvey.new(currentUserId, currentUnitId)
+    # u.get_talentlms_api_data
+    # answers = u.get_talentlms_api_data
+    #
+    # @user = User.new(currentUserId: params["currentUserId"], currentUnitId: params["currentUnitId"], answers: answers)
+    # @user.save!
+    #
+    # u.assign_survey
 
 
   else
@@ -40,6 +49,7 @@ class TalentLMSUserSurvey
     response = HTTParty.get(talentlms_url, :basic_auth => auth)
     parsed_response  = JSON.parse(response)
 
+    binding.pry
 
     if parsed_response.key?("error")
       @survey_answers = "nil"
@@ -56,21 +66,26 @@ class TalentLMSUserSurvey
       puts "user has not taken survey yet"
     else
       if @survey_answers.keys.first == "1"
-        url = URI("https://wisdomlabs.talentlms.com/api/v1/addusertocourse")
 
-        http = Net::HTTP.new(url.host, url.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
-        request = Net::HTTP::Post.new(url)
-        request["content-type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-        request["authorization"] = 'Basic R3p1Y1VoV05ldkluQlBONENWeGwxejFYTmNJV0RQOg=='
-        request["cache-control"] = 'no-cache'
-        request["postman-token"] = '2ed789e5-880e-9f15-8d11-4a0b1ec6905f'
-        request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"user_id\"\r\n\r\n28\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"course_id\"\r\n\r\n152\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"role\"\r\n\r\nlearner\r\n-----011000010111000001101001--"
+        # url = URI("https://wisdomlabs.talentlms.com/api/v1/addusertocourse")
+        #
+        # http = Net::HTTP.new(url.host, url.port)
+        # http.use_ssl = true
+        # http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        #
+        # request = Net::HTTP::Post.new(url)
+        # request["content-type"] = 'multipart/form-data; boundary=---011000010111000001101001'
+        # request["authorization"] = 'Basic R3p1Y1VoV05ldkluQlBONENWeGwxejFYTmNJV0RQOg=='
+        # request["cache-control"] = 'no-cache'
+        # request["postman-token"] = '2ed789e5-880e-9f15-8d11-4a0b1ec6905f'
+        # request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"user_id\"\r\n\r\n28\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"course_id\"\r\n\r\n152\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"role\"\r\n\r\nlearner\r\n-----011000010111000001101001--"
+        #
+        # response = http.request(request)
+        #   puts response.read_body
 
-        response = http.request(request)
-        puts response.read_body
+
+
       else
         puts "what what??"
       end
